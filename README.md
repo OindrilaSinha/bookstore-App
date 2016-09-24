@@ -3,10 +3,10 @@
 for running this app 
 git clone 
 
-If you dont have install live-server in your system then please install 
-npm install -g live-server 
+If you dont have install express in your system then please install 
+npm install -g express 
 
 run 
-live-server
+node server.js
 
 http://localhost:3000/#/bookstore.com
