@@ -1,0 +1,204 @@
+<ng-include src="'app/template/nav-top.html'"></ng-include>
+<div class="wrapper">
+    <div class="container">
+
+   
+        <div class="row">
+            <div class=" col-sm-9" >
+                <!-- top search bar with start quiz button using bootstrap -->
+
+                <!-- using a bootstrap well to style -->
+                <div class="well well-sm border-info" ng-repeat="book in list.book_details  | filter:list.search" ng-if="book.purchased == 'yes'">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- ng-src instead of src to allow correct functionality with angular -->
+                            <img ng-src="{{ book.image_url}}" class="img-rounded img-responsive well-image">
+                        </div>
+                        <div class="col-md-4">
+                            <!-- ng-src instead of src to allow correct functionality with angular -->
+                            <h4>{{book.title}}</h4>
+                            <!-- more angular data binding -->
+                            <p><strong>By: </strong>{{book.author}}</p>
+                            <p><strong>Language: </strong>{{book.language}}</p>
+
+
+                            <hr/>
+                            <!-- data-toggle and data-target are bootstrap attributes to trigger the popup modal -->
+                            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#book-desc" ng-click="list.changeActiveBook(book)">Description</button>
+                            <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#book-spec" ng-click="list.changeActiveBook(book)">Specification</button>
+
+                            <button class="btn btn-default btn-xs " data-toggle="modal" data-target="#book-reviews" ng-click="list.changeActiveBook(book.review_details)">Reviews</button></div>
+
+                        <div class="col-md-4">
+                            <div well well-sm>
+
+                                <p><strong>Price: </strong>{{book.price |currency}}</p>
+                                <span class="label label-warning" ng-hide="book.sold_out == 'No'">Out off Stock</span>
+                                <span class="label label-success" ng-show="book.sold_out == 'No'">In Stock</span>
+                                <button style="margin-top:5px;" class=" btn btn-primary btn-sm btn-block" ng-hide="book.sold_out === 'Yes' " ng-disabled="" ng-click="list.addCart(book)"><i class="fa fa-shopping-cart"></i> Add To Cart</button>
+                               
+                                <button style="margin-top:5px;" class=" btn btn-success btn-sm btn-block" ng-show="book.sold_out === 'No'" ng-click="list.buyBook(book)"> Buy</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- row -->
+                </div>
+                <!-- well -->
+            </div>
+            <!-- col-xs-9 -->
+            <div class="col-md-3">
+                <div class="well well-sm clearfix" ng-if="list.cartItemCount >0 ">
+                  <p><strong><i class="fa fa-shopping-cart"></i>{{list.cartItemCount }} Items</strong></p>
+                  <strong>Total:</strong>{{list.total | currency}}
+                </div>
+                 
+                <div class="alert alert-success fade in clearfix" ng-if="list.cartBook.length" >
+                 <p ng-repeat=" cart in  list.cartBook">Thank you for buying the book <strong>{{cart.title}}</stron></p>
+                 </div>
+            </div>
+
+            <!-- the markup for the modal --Description Block-->
+            <div class="modal" id="book-desc">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!-- more usage of angular data binding -->
+                            <h2>{{list.activeBook.title}}</h2>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xs-8 col-xs-offset-2">
+                                    <!-- ng-src used again instead of src -->
+                                    <img ng-src="{{list.activeBook.image_url}}" class="img-rounded img-responsive">
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-md-6">
+                                    <!-- angular data binding -->
+                                    <p><strong>By: </strong>{{list.activeBook.author}}</p>
+                                    <p><strong>Language: </strong>{{list.activeBook.language}}</p>
+                                    <p><strong>Price: </strong>{{list.activeBook.price | currency}}</p>
+                                </div>
+                                <div class="col-xs-12 top-buffer">
+                                    <!-- angular data binding and data-dismiss for bootstrap -->
+                                    <p><strong>Description:</strong> {{list.activeBook.description}}</p>
+                                    <button class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Description modal -->
+            <!-- the markup for the modal --Specification Block-->
+            <div class="modal" id="book-spec">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!-- more usage of angular data binding -->
+                            <h2>{{list.activeBook.title}}</h2>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xs-8 col-xs-offset-2">
+                                    <!-- ng-src used again instead of src -->
+                                    <img ng-src="{{list.activeBook.image_url}}" class="img-rounded img-responsive">
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-md-9">
+                                    <h3>Specification Details: </h3>
+                                    <!-- angular data binding -->
+                                    <p><strong>Paperback: </strong>{{list.activeBook.Number_of_Pages}}&nbsp;Pages</p>
+                                    <p><strong>Publisher: </strong>{{list.activeBook.Publisher}}</p>
+                                    <p><strong>Language: </strong>{{list.activeBook.language}}</p>
+                                    <p><strong>ISBN-10: </strong>{{list.activeBook.ISBN_10 }}</p>
+                                    <p><strong>ISBN-13: </strong>{{list.activeBook.ISBN_13}}</p>
+                                    <p><strong>Product Dimensions: </strong>{{list.activeBook.Product_Dimensions }}</p>
+
+
+                                </div>
+                                <div class="col-xs-12 top-buffer">
+                                    <!-- angular data binding and data-dismiss for bootstrap -->
+
+                                    <button class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Specification modal -->
+            <!--End Description modal -->
+            <!-- the markup for the modal --Reviews Block-->
+            <div class="modal" id="book-reviews">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!-- more usage of angular data binding -->
+                            <h2>Reviews</h2>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="row top-buffer">
+                                <div class="col-md-9" ng-repeat="review in list.activeBook">
+
+                                    <!-- angular data binding -->
+
+
+
+                                    <p><strong>Stars: </strong>{{review.Customer_Review }}</p>
+                                    <p><strong>By: </strong>{{review.review_by }}</p>
+                                    <p><strong>Comment:</strong>{{review.review_comment }}</p>
+                                     <hr/>   
+                                </div>
+
+                                <div class="col-xs-12 top-buffer">
+                                    <!-- angular data binding and data-dismiss for bootstrap -->
+                                    <h3>Add Review</h3>
+                                    <form name="reviewForm" ">
+                                        <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
+
+                                        <!-- Customer review -->
+                                        <div class="form-group ">
+                                            <label>Rate the book:</label>
+                                            <select class="form-control " id="sel1 " name="Customer_Review " ng-model="list.reviews.Customer_Review " required>
+                                                <option >1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                           {{list.reviews.customer_review}}
+                                        </div>
+                                        <div class="form-group ">
+                                            <label>Email:</label>
+
+                                            <input type="email " name="review_by " class="form-control " ng-model="list.reviews.review_by " required>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label for="comment ">Comment:</label>
+                                            <textarea class="form-control " name="review_comment "  ng-model="list.reviews.review_comment
+                                        " required rows="5 " id="comment "></textarea>
+                                        </div>
+                                        <p>reviewForm {{reviewForm.customer_review.$valid}}</p>
+                                        <!-- SUBMIT BUTTON -->
+                                        <button type="submit " ng-click="list.submitForm() " class="btn btn-primary ">Submit</button>
+
+                                    </form>
+                                    <button class="btn btn-danger pull-right " data-dismiss="modal ">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Specification modal -->
+            
+        </div>
+
+    </div>
+
+</div>
+<ng-include src=" 'app/template/footer.html' "></ng-include>
